@@ -1,5 +1,13 @@
 
-import {getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword} from 'firebase/auth';
+import {
+    getAuth,
+    signInWithPopup, 
+    GoogleAuthProvider, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged}
+     from 'firebase/auth';
 import { getFirestore,doc, setDoc, getDoc} from 'firebase/firestore'
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -44,7 +52,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
                 displayName,
                 email,
                 createdAt,
-                    additionalInformation 
+                    ...additionalInformation
             })
         }catch(error){
             console.log('Error creating the user', error.message);
@@ -62,3 +70,7 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
     if(!email || !password) return;
     return await signInWithEmailAndPassword(auth, email, password);
 }
+
+export const SignOutUser = async() => signOut(auth);
+
+export const OnAuthChangeListener = (callback) => onAuthStateChanged(auth, callback);
